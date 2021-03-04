@@ -1,18 +1,19 @@
 $noop( ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄
   ❄❄❄❄  About  ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄
-❄❄  Pegasus' Picard File Naming Script v0.1.1-dev                 2021-03-04  ❄❄
+❄❄  Pegasus' Picard File Naming Script v0.1.2-dev                 2021-03-04  ❄❄
 ❄   CopyLeft 🄯 2021 Mattijs Snepvangers [pegasusict]                           ❄
-❄   based on rdswift's Filenaming script                                       ❄
+❄   based on Bob Swift's [rdswift] Filenaming script                           ❄
 ❄❄  License: GPLv3.0                                                          ❄❄
   ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄
 ❄❄      This script relies on inputs provided by the following plugins:       ❄❄
 ❄❄    ⇒ Additional Artists Variables [AAV]                                    ❄❄
   ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄)
+  
 $noop(❄❄❄❄ CHANGELOG ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄)
 0.1.1-dev [FIX] Fixed a bug which malformed the trackartist name. credit: outsidecontext
           https://community.metabrainz.org/t/artist-case-mismatch-in-filenaming-script/522434/1
+0.1.2-dev [FIX] changed file extension to more sensible one.
 ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄)
-
 
 $noop(❄ User Settings  ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄)
 $set(_PaddedDiscNumMinLength,1)
