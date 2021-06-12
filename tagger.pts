@@ -15,9 +15,8 @@ $noop( ########################################################################
 
 $noop(#### CHANGELOG ##########################################################
 VERSION   MUTATION  DESCRIPTION
-0.4.0-dev FIX       Fixed a bug with de decade tag
-
-0.3.0-dev FIX	    Fixed a bug leading to inconsistent Artist sorting/prefix
+0.2.2-dev FIX       Fixed a bug with de decade tag
+0.2.1-dev FIX	      Fixed a bug leading to inconsistent Artist sorting/prefix
                     switching with compilation/NonAlbum/Single tracks
 0.2.0-dev FIX       Fixed a bug leading to albumartist being set to unknown
                     artist when tracks are labeled as non-album
