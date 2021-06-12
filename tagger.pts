@@ -1,0 +1,180 @@
+$noop( ####  About  ###########################################################)
+$set(_cScriptName,Pegasus' Picard Tagger Script)
+$set(_cScriptVersion,0.4.0-dev)
+$set(_cScriptBuild,2021-06-12)
+$set(_cScriptAuthor,Mattijs Snepvangers [pegasusict])
+$set(_cScriptUrl,https://github.com/pegasusict/MuzicbrainzPicard-stuff)
+$set(_cScriptLicense,GPLv3.0 or later)
+$noop( ########################################################################
+       ##  CopyLeft 🄯 2021 Mattijs Snepvangers [pegasusict]                  ##
+       ##  based on rdswift's Filenaming script                              ##
+       ########################################################################
+       ## This script relies on inputs provided by the following plugins:    ##
+       ##    ⇒ Additional Artists Variables [AAV]                            ##
+       ########################################################################)
+
+$noop(#### CHANGELOG ##########################################################
+VERSION   MUTATION  DESCRIPTION
+0.4.0-dev FIX       Fixed a bug with de decade tag
+
+0.3.0-dev FIX	    Fixed a bug leading to inconsistent Artist sorting/prefix
+                    switching with compilation/NonAlbum/Single tracks
+0.2.0-dev FIX       Fixed a bug leading to albumartist being set to unknown
+                    artist when tracks are labeled as non-album
+          ENHANCED  Encorporated an option to collate Non-Album Tracks as
+                    Compilation tracks
+0.1.1-dev FIX       Fixed a bug which malformed the trackartist name.
+                    credit: outsidecontext
+                    https://community.metabrainz.org/t/artist-case-
+                        mismatch-in-filenaming-script/522434/1
+###############################################################################)
+
+
+$noop(##  User Settings  ######################################################)
+$set(_PaddedDiscNumMinLength,1)
+$set(_PaddedTrackNumMinLength,2)
+$set(_aTitleMaxLength,65)
+$set(_tTitleMaxLength,65)
+$set(_tFilenameMaxLength,120)
+$setmulti(_Prefixes,THE; The; the; A; a; AN; An; an; DE; De; de; EEN; Een; een; HET; Het; het; LE; Le; le)
+
+$noop(### binary switches ###)
+$set(_aTitleReleaseYear,)
+$set(_aTitleDisambig,1)
+$set(_aTitleLabel,)
+$set(_aTitleCatalog,)
+$set(_aCollateCompilations,1)$noop(collate compilation tracks)
+$set(_aNonAlbumAsCompilations,1)$noop(collate non-album tracks)
+$set(_aCollateSingles,1)$noop(collate Singles' tracks)
+$set(_aTitleCatalog,)
+$noop(### end binary switches ###)
+
+$noop(#  Constants  ############################################################)
+$set(_cSignature,Processed by MusicBrainz Picard at $datetime() using %_cScriptName% v%_cScriptVersion% build%_cScriptBuild%.
+%_cScriptUrl%)
+$set(_cUnknownArtistID,125ec42a-7229-4250-afc5-e057484327fe)
+$set(_cVariousArtistID,89ad4ac3-39f7-470e-963a-56509c546377)
+$set(_cUnknownArtist,[Unknown Artist])
+$set(_cBlankArtist,_)
+$set(_cVariousArtist,[Various Artists])
+$set(_cUnknownAlbum,[Unknown Album])
+$set(_cNonAlbum,[Non-Album Tracks])
+$set(_cNoTitle,[Unknown Title])
+$set(_cClassical,[Classical])
+$set(_cSoundtrack,[Soundtracks])
+$set(_cCompilation,[Compilations])
+$set(_cSingles,[Singles])
+$set(_cOther,[Other])
+$noop(#  RegEx Constants  ######################################################)
+$set(_reCaseInsensitive,\(?i\))
+$noop(##########################################################################)
+
+$noop(# Setting sensible default values if AAV plugin or metadata is missing. ##)
+$set(_nFAA,$if2(%_artists_album_all_std%,%albumartist%,%_cUnknownArtist%))
+$set(_nPAA,$if2(%_artists_album_primary_std%,%albumartist%,%_cUnknownArtist%))
+$set(_nFAAS,$if2(%_artists_album_all_sort%,%albumartistsort%,%_cBlankArtist%))
+$set(_nPAAS,$if2(%_artists_album_primary_sort%,%albumartistsort%,%_cBlankArtist%))
+$set(_nFAAPS,$if2(%_artists_album_all_sort_primary%,%albumartistsort%,%_cBlankArtist%))
+$set(_nPTA,$if2(%_artists_track_primary_cred%,%artist%))
+$set(_nPTAS,$if2(%_artists_track_primary_sort%,%artist_sort%,%artistsort%))
+$set(_nATA,%_artists_track_additional_cred%)
+$set(_nFTA,$if2(%_artists_track_all_cred%,%artist%,%_cUnknownArtist%))
+$set(_nANT,$if2(%album%,%_cUnknownAlbum%))
+$set(_nTNT,$if2(%title%,%_cNoTitle%))
+
+
+$noop(# Initialize Working Variables  ##########################################)
+$set(_nMedia,%media%)
+$set(_nTotalDiscs,$if2(%totaldiscs%,1))
+$set(_nDiscNum,$if2(%discnumber%,1))
+$set(_nTotalTracks,$if2(%totaltracks%,1))
+$set(_nTrackNum,$if2(%tracknumber%,1))
+$set(_nAlbumArtistID,$if2(%musicbrainz_albumartistid%,%_kUnKnownArtistID%))
+$set(_nIsCompilation,$if($or($gt(%_artists_album_all_count%,1),%compilation%),1,))
+$set(_nCCIC,$if($and(%_aCollateCompilations%,%_nIsCompilation%),1,))
+$set(_nIsNonAlbumTrack,$if($eq(%_nANT%,%_cNonAlbum%),1,))
+$set(_nNAAC,$if($and(%_aNonAlbumAsCompilations%,%_nIsNonAlbumTrack%),1,))
+$set(_nIsSingle,$if($or($lte(%_nTotaltracks%,2),$eq(%_primaryreleasetype%,single)),1,))
+$set(_nCSIS,$if($and(%_aCollateSingles%,%_nIsSingle%),1,))
+$if($or(%_nCCIC%,%_nNAAC%),$set(_nANT,%_cCompilation%),)
+$if(%_nCSIS%,$set(_nANT,%_cSingle%))
+$set(_nYear,[$if($or(%_nCCIC%,%_nCSIS%),0000,$left($if2(%originaldate%,%originalyear%,%date%,0000),4))])
+$set(_nBR,[$rreplace(%_bitrate%,\\.\\d*\$,)])
+$set(_nLen,[%_length%])
+
+$noop( #######################################################################
+##  If standardized primary album artist is different from credited primary   ##
+#   any track artist [other than prefix] show in track file name. Otherwise,    #
+##  show additional credited track artists in track file name.                ##
+  ############################################################################)
+$set(_tAlbumArtist,$lower($swapprefix(%_nPAA%, %_Prefixes%)))
+$set(_tTrackArtist,$swapprefix(%_nPTA%, %_Prefixes%))
+$if($eq($lower(%_tAlbumArtist%),$lower(%_tTrackArtist%)),
+$set(_nFeat,$if(%_nATA%, [feat. %_nATA%],)),$set(_nFeat, [%_nFTA%]))
+
+$noop(##  Calculate and apply padding for disc and track numbers. ##############)
+$if($not($or(%_nCCIC%,%_nCSIS%,%_nNAAC%)),
+$if($gt(%_nTotalDiscs%,1),
+$set(_TotalDiscNumberLength,$len($if2(%totaldiscs%,1)))
+$set(_DiscPadLength,$if($gt(%_TotalDiscNumberLength%,%_PaddedDiscNumMinLength%),
+%_TotalDiscNumberLength%,%_PaddedDiscNumMinLength%))
+$set(_PaddedDiscNum,$num($if2(%discnumber%,1),%_DiscPadLength%)-),$noop()
+)
+$set(_TotalTrackNumberLength,$len($if2(%totaltracks%,1)))
+$set(_TrackPadLength,$if($gt(%_TotalTrackNumberLength%,%_PaddedTrackNumMinLength%),
+%_TotalTrackNumberLength%,%_PaddedTrackNumMinLength%))
+$set(_nTNum,%_PaddedDiscNum%$num($if2(%tracknumber%,1),%_TrackPadLength%). )
+,
+$set(_nTNum,)
+)
+$noop(########################################################################
+##  Add disambiguation, release year, label and catalog number to the         ##
+##  album title information if available and enabled in "User Settings".      ##
+  ############################################################################)
+$if($not($or(%_nNAAC%,%_nCCIC%,%_nCSIS%)),
+$set(_nDisambig,$if($and(%_releasecomment%,%_aTitleDisambig%), \(%_releasecomment%\),))
+$set(_nTitleExtra,)
+$if(%_aTitleLabel%,$if(%label%,$setmulti(_temp,%label%)$set(_nTitleExtra,$getmulti(%_temp%,0))))
+$if(%_aTitleCatalog%,$if(%catalognumber%,$setmulti(_temp,%catalognumber%)$set(_nTitleExtra,$trim(%_nTitleExtra% $getmulti(%_temp%,0)))))
+$if(%_aTitleReleaseYear%,$if(%date%,$set(_temp,[$left(%date%,4)])
+$if($ne([%_temp%],%_nYear%),$if(%_nTitleExtra%,$set(_nTitleExtra,%_nTitleExtra%\,))$set(_nTitleExtra,$trim(%_nTitleExtra% %_temp%)))))
+$if(%_nTitleExtra%,$set(_nTitleExtra, [%_nTitleExtra%]))
+$set(_nANT,%_nANT%%_nDisambig%%_nTitleExtra%)
+,
+$unset(_nDisambig)
+$unset(_releasecomment)
+$unset(_aTitleDisambig)
+$unset(_nTitleExtra)
+)
+$noop(##  Remove any illegal characters  #######################################)
+$set(_nANT,$replace_forbidden(%_nANT%))
+$set(_nTNT,$replace_forbidden(%_nTNT%))
+
+$noop( #######################################################################
+##  Trim the album and track names used to create directories and             ##
+#   tracks if they are longer than the maximum lengths set in the              #
+##  "User Settings" section.                                                  ##
+  ############################################################################)
+$if($gt($len(%_nANT%),%_aTitleMaxLength%),$set(_nANT,$left(%_nANT%,$sub(%_aTitleMaxLength%,1))…))
+$if($gt($len(%_nTNT%),%_tTitleMaxLength%),$set(_nTNT,$left(%_nTNT%,$sub(%_tTitleMaxLength%,1))…))
+
+$noop(##  Set File Path  #######################################################)
+$if(
+$or(
+%_nNAAC%,%_nCCIC%,%_nCSIS%,
+$eq_any(%musicbrainz_albumartistid%,%_cVariousArtistID%,%_cUnknownArtistID%)
+),
+$set(_nArtist,%_nPTAS%),
+$set(_nArtist,%_nPAAS%)
+)
+$if($eq($lower(_nArtist),$lower(%_cUnknownArtist%)),$set(_nArtist,%artistsort%))
+$set(_nInitial,$upper($firstalphachar(%_nArtist%,0-9)))
+$set(_nFilePath,%_nInitial%/%_nArtist%/%_nYear% %_nANT%/)
+$set(decade,$decade(%_nYear%,0))
+$noop(##  Set FileName  ########################################################)
+$set(_nFileName,%_nTNum%%_tTrackArtist% - %_nTNT%)
+$set(_tFilenameMaxLength,$sub(%_tFilenameMaxLength%,17))
+$if($gt($len(%_nFileName%),%_tFilenameMaxLength%),$set(_nFileName,$left(%_nFileName%,%_tFilenameMaxLength%)…))
+
+$noop(##  Result ###############################################################)
+$set(ProcessedBy,%_cSignature%)
