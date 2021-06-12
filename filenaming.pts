@@ -1,10 +1,10 @@
 $noop( ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄
   ❄❄❄❄  About  ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄
-❄❄  Pegasus' Picard File Naming Script v0.1.0-dev                 2021-06-12  ❄❄
+❄❄  Pegasus' Picard File Naming Script v0.2.2-dev                 2021-06-12  ❄❄
 ❄   CopyLeft 🄯 2021 Mattijs Snepvangers [pegasusict]                          ❄
 ❄   https://github.com/pegasusict/MuzicbrainzPicard-stuff                      ❄
 ❄   based on Bob Swift's [rdswift] Filenaming script                           ❄
 ❄❄  License: GPLv3.0 or later                                                 ❄❄
   ❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄❄)
 
-%_nInitial%/%_nArtist%/%_nYear% %_nANT%/%_nFileName% %_nLen% %_nBR%
+sorted by MB 2021 %_cScriptVersion%/%_nInitial%/%_nArtist%/%_nYear% %_nANT%/%_nFileName% %_nLen% %_nBR%
