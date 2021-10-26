@@ -1,7 +1,7 @@
 $noop( ####  About  ###########################################################)
 $set(_cScriptName,Pegasus' Picard Tagger Script)
-$set(_cScriptVersion,0.3.0-dev)
-$set(_cScriptBuild,20210613)
+$set(_cScriptVersion,0.4.0-alpha)
+$set(_cScriptBuild,20211026)
 $set(_cScriptAuthor,Mattijs Snepvangers [pegasusict])
 $set(_cScriptUrl,https://github.com/pegasusict/MuzicbrainzPicard-stuff)
 $set(_cScriptLicense,GPLv3.0 or later)
@@ -16,19 +16,20 @@ $noop( ########################################################################
 $noop( #### ROADMAP ##########################################################)
 
 $noop( #### CHANGELOG ########################################################
-VERSION   MUTATION  DESCRIPTION
-0.3.0-dev ENHANCE   Major rewrite of tagger and filenaming scripts
-0.2.3-dev FIX       Moved bitrate to filenaming script
-0.2.2-dev FIX       Fixed a bug with de decade tag
-0.2.1-dev FIX       Fixed a bug leading to inconsistent Artist sorting/prefix
-                    switching with compilation/NonAlbum/Single tracks
-0.2.0-dev FIX       Fixed a bug leading to albumartist being set to unknown
-                    artist when tracks are labeled as non-album
-          ENHANCE   Encorporated an option to collate Non-Album Tracks as
-                    Compilation tracks
-0.1.1-dev FIX       Fixed a bug which malformed the trackartist name.
-                    credit: outsidecontext
-                    https://community.metabrainz.org/t/artist-case-
+VERSION     MUTATION  DESCRIPTION
+0.4.0-alpha ENHANCE   Added option to process all as single compilation, e.g. DJ-set
+0.3.0-dev   ENHANCE   Major rewrite of tagger and filenaming scripts
+0.2.3-dev   FIX       Moved bitrate to filenaming script
+0.2.2-dev   FIX       Fixed a bug with de decade tag
+0.2.1-dev   FIX       Fixed a bug leading to inconsistent Artist sorting/prefix
+                      switching with compilation/NonAlbum/Single tracks
+0.2.0-dev   FIX       Fixed a bug leading to albumartist being set to unknown
+                      artist when tracks are labeled as non-album
+            ENHANCE   Encorporated an option to collate Non-Album Tracks as
+                      Compilation tracks
+0.1.1-dev   FIX       Fixed a bug which malformed the trackartist name.
+                      credit: outsidecontext
+                      https://community.metabrainz.org/t/artist-case-
                         mismatch-in-filenaming-script/522434/1
 ##############################################################################)
 

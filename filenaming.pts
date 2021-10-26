@@ -1,11 +1,14 @@
-$noop(	About	#############################################################
-##	Pegasus' Picard File Naming Script v0.3.0-dev				2021-06-13	 ##
+$noop(	About	 ############################################################
+##	Pegasus' Picard File Naming Script v0.4.0-alpha              2021-10-26  ##
 #	CopyLeft 🄯 2021 Mattijs Snepvangers [pegasusict]						  #
 #	https://github.com/pegasusict/MuzicbrainzPicard-stuff					  #
 #	based on Bob Swift's [rdswift] Filenaming script						  #
 ##	License: GPLv3.0 or later												 ##
   ###########################################################################)
 
+$noop( Process as Compilation, eg in case of cleaning filenames in DJ-set
+## )
+$set(_SaveAllAsCompilation,0)
 $noop(	User Settings	######################################################)
 $set(_PaddedDiscNumMinLength,1)
 $set(_PaddedTrackNumMinLength,2)
