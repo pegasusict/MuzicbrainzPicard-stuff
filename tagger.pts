@@ -1,7 +1,7 @@
 $noop( ####  About  ###########################################################)
 $set(_cScriptName,Pegasus' Picard Tagger Script)
-$set(_cScriptVersion,0.4.0-alpha)
-$set(_cScriptBuild,20211026)
+$set(_cScriptVersion,0.4.1-alpha)
+$set(_cScriptBuild,20230604)
 $set(_cScriptAuthor,Mattijs Snepvangers [pegasusict])
 $set(_cScriptUrl,https://github.com/pegasusict/MuzicbrainzPicard-stuff)
 $set(_cScriptLicense,GPLv3.0 or later)
@@ -17,6 +17,7 @@ $noop( #### ROADMAP ##########################################################)
 
 $noop( #### CHANGELOG ########################################################
 VERSION     MUTATION  DESCRIPTION
+0.4.1-alpha FIX	    Changed year in sorting directory from fixed to dynamic
 0.4.0-alpha ENHANCE   Added option to process all as single compilation, e.g. DJ-set
 0.3.0-dev   ENHANCE   Major rewrite of tagger and filenaming scripts
 0.2.3-dev   FIX       Moved bitrate to filenaming script
